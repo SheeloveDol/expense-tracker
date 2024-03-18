@@ -26,6 +26,14 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  // Creating modal bottom sheet for adding expenses
+  void _openAddNewExpenseOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => const Text('This is a modal!'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +41,7 @@ class _ExpensesState extends State<Expenses> {
         title: const Text('Expenses Tracker'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddNewExpenseOverlay,
             icon: const Icon(Icons.add),
           ),
         ],
