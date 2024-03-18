@@ -9,8 +9,8 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-// Creating dummy data for expenses
 
+// Creating dummy data for expenses
   final List<Expense> _recentExpenses = [
     Expense(
       title: 'Telescope',
