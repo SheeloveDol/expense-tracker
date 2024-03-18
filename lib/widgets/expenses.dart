@@ -10,7 +10,6 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-
 // Creating dummy data for expenses
   final List<Expense> _recentExpenses = [
     Expense(
@@ -29,10 +28,19 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expenses Tracker'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Column(
         children: [
-         const Text('The chart'),
+          const Text('The chart'),
           Expanded(child: ExpensesList(expenses: _recentExpenses)),
         ],
       ),
