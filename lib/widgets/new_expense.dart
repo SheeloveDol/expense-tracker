@@ -1,3 +1,4 @@
+import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +14,7 @@ class _NewExpenseState extends State<NewExpense> {
   // creating controller to get the value of the text field
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  DateTime? _selectedDate;
 
   // VERY IMPORTANT! Dispose of the controller when the widget is removed from the widget tree
   @override
@@ -22,15 +24,18 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
-  void _showDatePicker() {
+  void _showDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day); // 1 year ago
 
-    showDatePicker(
-        context: context,
-        initialDate: now,
-        firstDate: firstDate,
-        lastDate: now);
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+
+    setState(() => _selectedDate = pickedDate);
   }
 
   @override
@@ -64,7 +69,12 @@ class _NewExpenseState extends State<NewExpense> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('Selected Date'),
+                    Text(
+                      _selectedDate == null
+                          ? 'No date chosen'
+                          : formatter.format(
+                              _selectedDate!), // using the intl package defined in expnese model
+                    ),
                     IconButton(
                         icon: const Icon(Icons.calendar_month),
                         onPressed: _showDatePicker)
