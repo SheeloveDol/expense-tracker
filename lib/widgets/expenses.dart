@@ -45,11 +45,43 @@ class _ExpensesState extends State<Expenses> {
 
   // removing expense from the list of _recentExpenses
   void _removeExpense(Expense expenseToBeRemoved) {
+    // getting the index of the expense to be removed
+    final expenseIndex = _recentExpenses.indexOf(expenseToBeRemoved);
+
+    // removing the expense from the list
     setState(() => _recentExpenses.remove(expenseToBeRemoved));
+
+    // Clearing all the snackbars before showing a new one
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    // Showing a snackbar to undo the removal of the expense
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 4),
+        content: const Text('Expense removed!'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(
+                () => _recentExpenses.insert(expenseIndex, expenseToBeRemoved));
+          },
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Creating the main content of the app depending on the list of expenses
+    Widget mainContent = const Center(
+      child: Text('No expenses added yet!'),
+    );
+
+    if (_recentExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+          expenses: _recentExpenses, onRemoveExpense: _removeExpense);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expenses Tracker'),
@@ -64,10 +96,8 @@ class _ExpensesState extends State<Expenses> {
         children: [
           const Text('The chart'),
           Expanded(
-              child: ExpensesList(
-                  expenses: _recentExpenses,
-                  onRemoveExpense:
-                      _removeExpense)), // Passing the list of expenses to the ExpensesList widget
+            child: mainContent,
+          ), // Passing the list of expenses to the ExpensesList widget
         ],
       ),
     );
