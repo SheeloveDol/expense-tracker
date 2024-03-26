@@ -40,6 +40,31 @@ class _NewExpenseState extends State<NewExpense> {
     setState(() => _selectedDate = pickedDate);
   }
 
+  // Validation for the form
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final invalidAmount = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        invalidAmount ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid input'),
+          content: const Text(
+              'Please enter a valid title, amount, date and category'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Okay'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -116,7 +141,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  debugPrint(_titleController.text);
+                  _submitExpenseData();
                 },
                 child: const Text('Add Expense'),
               ),
