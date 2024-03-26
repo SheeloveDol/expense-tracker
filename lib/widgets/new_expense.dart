@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  // Function to add the new expense to the list passed on the widget
+  final void Function(Expense expenseToBeAdded) onAddExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -63,6 +66,18 @@ class _NewExpenseState extends State<NewExpense> {
       );
       return;
     }
+
+    // Gives access to the widget class properties
+    // This way we can access the onAddExpense function
+    // and add the new expense to the list
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!, // The exclamation mark is used to tell Dart that the value will never be null
+        category: _selectedCategory,
+      ),
+    );
   }
 
   @override
