@@ -30,8 +30,11 @@ class _ExpensesState extends State<Expenses> {
   // Creating modal bottom sheet for adding expenses
   void _openAddNewExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true, // To make the modal bottom sheet full screen
       context: context,
-      builder: (ctx) => NewExpense(onAddExpense: _addNewExpense,), // Passing the function to add the new expense
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addNewExpense,
+      ), // Passing the function to add the new expense
     );
   }
 

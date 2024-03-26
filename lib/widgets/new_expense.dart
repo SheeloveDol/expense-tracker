@@ -74,16 +74,20 @@ class _NewExpenseState extends State<NewExpense> {
       Expense(
         title: _titleController.text,
         amount: enteredAmount,
-        date: _selectedDate!, // The exclamation mark is used to tell Dart that the value will never be null
+        date:
+            _selectedDate!, // The exclamation mark is used to tell Dart that the value will never be null
         category: _selectedCategory,
       ),
     );
+    // Automatically closes the modal bottom sheet on successful submission of new expense
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(
+          16.0, 48, 16, 16), // padding for the modal bottom sheet
       child: Column(
         children: [
           TextField(
