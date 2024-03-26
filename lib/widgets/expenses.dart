@@ -43,6 +43,11 @@ class _ExpensesState extends State<Expenses> {
     setState(() => _recentExpenses.add(expenseToBeAdded));
   }
 
+  // removing expense from the list of _recentExpenses
+  void _removeExpense(Expense expenseToBeRemoved) {
+    setState(() => _recentExpenses.remove(expenseToBeRemoved));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +63,11 @@ class _ExpensesState extends State<Expenses> {
       body: Column(
         children: [
           const Text('The chart'),
-          Expanded(child: ExpensesList(expenses: _recentExpenses)),
+          Expanded(
+              child: ExpensesList(
+                  expenses: _recentExpenses,
+                  onRemoveExpense:
+                      _removeExpense)), // Passing the list of expenses to the ExpensesList widget
         ],
       ),
     );
