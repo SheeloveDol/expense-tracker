@@ -15,6 +15,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
+  Category _selectedCategory = Category.work;
 
   // VERY IMPORTANT! Dispose of the controller when the widget is removed from the widget tree
   @override
@@ -29,6 +30,7 @@ class _NewExpenseState extends State<NewExpense> {
     final firstDate = DateTime(now.year - 1, now.month, now.day); // 1 year ago
 
     final pickedDate = await showDatePicker(
+      // <-- Flutter's built-in date picker
       context: context,
       initialDate: now,
       firstDate: firstDate,
@@ -83,21 +85,40 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
+          const SizedBox(height: 20),
           Row(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  debugPrint(_titleController.text);
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(
+                          category.name.toUpperCase(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (Category? value) {
+                  if (value == null) return;
+                  setState(() => _selectedCategory =
+                      value); // update the selected category on change
                 },
-                child: const Text('Add Expense'),
               ),
               const Spacer(),
-              ElevatedButton(
+              TextButton(
                 onPressed: () {
                   debugPrint('Cancelling expense');
                   Navigator.of(context).pop();
                 },
                 child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  debugPrint(_titleController.text);
+                },
+                child: const Text('Add Expense'),
               ),
             ],
           ),
