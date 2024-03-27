@@ -3,7 +3,8 @@ import 'package:expense_tracker/widgets/expense_item.dart';
 import 'package:flutter/material.dart';
 
 class ExpensesList extends StatelessWidget {
-  const ExpensesList({super.key, required this.expenses, required this.onRemoveExpense});
+  const ExpensesList(
+      {super.key, required this.expenses, required this.onRemoveExpense});
 
   final List<Expense> expenses; // <Expense> is from our model in expense.dart
   final void Function(Expense expenseToBeRemoved) onRemoveExpense;
@@ -16,6 +17,7 @@ class ExpensesList extends StatelessWidget {
         onDismissed: (direction) => onRemoveExpense(expenses[index]),
         background: Container(
           color: Theme.of(context).colorScheme.error,
+          margin: Theme.of(context).cardTheme.margin,
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 20),
           child: const Icon(
