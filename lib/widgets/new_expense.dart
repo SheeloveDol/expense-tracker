@@ -85,88 +85,98 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          16.0, 48, 16, 16), // padding for the modal bottom sheet
-      child: Column(
-        children: [
-          TextField(
-            controller: _titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(
-              label: Text('Title'),
-            ),
-          ),
-          Row(
+    // To fix issue with keyboard covering the modal bottom sheet and modal not scrolling
+    final keyboardSpace =
+        MediaQuery.of(context).viewInsets.bottom; // get the keyboard space
+
+    return SizedBox(
+      height: double.infinity, // make the modal bottom sheet full screen
+      child: SingleChildScrollView(
+        // To make the modal bottom sheet scrollable after the keyboard is opened
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16.0, 16, 16,
+              keyboardSpace + 16), // padding for the modal bottom sheet
+          child: Column(
             children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixText: '\$ ',
-                    label: Text('Amount'),
-                  ),
+              TextField(
+                controller: _titleController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  label: Text('Title'),
                 ),
               ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      _selectedDate == null
-                          ? 'No date chosen'
-                          : formatter.format(
-                              _selectedDate!), // using the intl package defined in expnese model
-                    ),
-                    IconButton(
-                        icon: const Icon(Icons.calendar_month),
-                        onPressed: _showDatePicker)
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              DropdownButton(
-                value: _selectedCategory,
-                items: Category.values
-                    .map(
-                      (category) => DropdownMenuItem(
-                        value: category,
-                        child: Text(
-                          category.name.toUpperCase(),
-                        ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        prefixText: '\$ ',
+                        label: Text('Amount'),
                       ),
-                    )
-                    .toList(),
-                onChanged: (Category? value) {
-                  if (value == null) return;
-                  setState(() => _selectedCategory =
-                      value); // update the selected category on change
-                },
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          _selectedDate == null
+                              ? 'No date chosen'
+                              : formatter.format(
+                                  _selectedDate!), // using the intl package defined in expnese model
+                        ),
+                        IconButton(
+                            icon: const Icon(Icons.calendar_month),
+                            onPressed: _showDatePicker)
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  debugPrint('Cancelling expense');
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _submitExpenseData();
-                },
-                child: const Text('Add Expense'),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  DropdownButton(
+                    value: _selectedCategory,
+                    items: Category.values
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category,
+                            child: Text(
+                              category.name.toUpperCase(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (Category? value) {
+                      if (value == null) return;
+                      setState(() => _selectedCategory =
+                          value); // update the selected category on change
+                    },
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      debugPrint('Cancelling expense');
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _submitExpenseData();
+                    },
+                    child: const Text('Add Expense'),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

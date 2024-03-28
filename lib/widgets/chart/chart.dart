@@ -42,7 +42,7 @@ class Chart extends StatelessWidget {
         horizontal: 8,
       ),
       width: double.infinity,
-      height: height < 500 ? (height - 50) : 180,
+      height: height < 500 ? (height) : 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         gradient: LinearGradient(

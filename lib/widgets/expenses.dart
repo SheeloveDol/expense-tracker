@@ -44,6 +44,7 @@ class _ExpensesState extends State<Expenses> {
   // Creating modal bottom sheet for adding expenses
   void _openAddNewExpenseOverlay() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true, // To make the modal bottom sheet full screen
       context: context,
       builder: (ctx) => NewExpense(
@@ -122,7 +123,8 @@ class _ExpensesState extends State<Expenses> {
             )
           : Row(
               children: [
-                Expanded( // Expanded widget to make the chart take the remaining space
+                Expanded(
+                  // Expanded widget to make the chart take the remaining space
                   child: Chart(expenses: _recentExpenses),
                 ), // Passing the list of expenses to the Chart widget
                 Expanded(
