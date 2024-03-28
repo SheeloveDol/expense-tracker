@@ -2,6 +2,7 @@ import 'package:expense_tracker/widgets/chart/chart.dart';
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Expenses extends StatefulWidget {
@@ -85,6 +86,9 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    // Media query to get the size of the screen
+    final width = MediaQuery.of(context).size.width;
+
     // Creating the main content of the app depending on the list of expenses
     Widget mainContent = const Center(
       child: Text('No expenses added yet!'),
@@ -105,16 +109,27 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(
-              expenses:
-                  _recentExpenses), // Passing the list of expenses to the Chart widget
-          Expanded(
-            child: mainContent,
-          ), // Passing the list of expenses to the ExpensesList widget
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(
+                    expenses:
+                        _recentExpenses), // Passing the list of expenses to the Chart widget
+                Expanded(
+                  child: mainContent,
+                ), // Passing the list of expenses to the ExpensesList widget
+              ],
+            )
+          : Row(
+              children: [
+                Expanded( // Expanded widget to make the chart take the remaining space
+                  child: Chart(expenses: _recentExpenses),
+                ), // Passing the list of expenses to the Chart widget
+                Expanded(
+                  child: mainContent,
+                ), // Passing the list of expenses to the ExpensesList widget
+              ],
+            ),
     );
   }
 }
