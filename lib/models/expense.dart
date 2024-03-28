@@ -37,3 +37,30 @@ class Expense {
   // using a getter with arrow syntax to format the date
   String get formattedDate => formatter.format(date);
 }
+
+// creating an expense bucket model
+class ExpenseBucket {
+  const ExpenseBucket({
+    required this.category,
+    required this.expenses,
+  });
+
+// creating a named constructor to filter the expenses based on the category
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
+
+  final Category category;
+  final List<Expense> expenses;
+
+  // creating a getter to calculate the total amount of expenses in the bucket
+  double get totalExpenses {
+    double sum = 0;
+
+    for (final expense in expenses) {
+      sum += expense.amount;
+    }
+    return sum;
+  }
+}
